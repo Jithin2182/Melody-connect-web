@@ -6,7 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import SongDetails from "./components/SongDetail";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
