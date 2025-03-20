@@ -62,7 +62,8 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/songs") // Fetch songs from backend
+    // .get("http://localhost:5000/api/songs")
+      .get("https://melody-connect-server.vercel.app/api/songs") // Fetch songs from backend
       .then((response) => setSongs(response.data))
       .catch((error) => console.error("Error fetching songs:", error));
   }, []);
