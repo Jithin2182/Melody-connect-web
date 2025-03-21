@@ -139,6 +139,10 @@ const Navbar = ({
     }
   };
 
+  const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+  // console.log(API_URL)
+
+
   const handleSearch = debounce(async (query) => {
     if (!query) {
       setResults([]);
@@ -146,8 +150,9 @@ const Navbar = ({
     }
 
     try {
-      const response = await axios.get(`https://melody-connect-server-beryl.vercel.app/api/songs?q=${query}`);
+      const response = await axios.get(`${API_URL}/api/songs?q=${query}`);
       setResults(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error("Error searching songs", error);
     }

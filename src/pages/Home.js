@@ -60,10 +60,12 @@ const SongLink = styled(Link)`
 const Home = () => {
   const [songs, setSongs] = useState([]);
 
+  const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+
   useEffect(() => {
     axios
     // .get("http://localhost:5000/api/songs")
-      .get("https://melody-connect-server-beryl.vercel.app/api/songs") // Fetch songs from backend
+      .get(`${API_URL}/api/songs`) // Fetch songs from backend
       .then((response) => setSongs(response.data))
       .catch((error) => console.error("Error fetching songs:", error));
   }, []);
