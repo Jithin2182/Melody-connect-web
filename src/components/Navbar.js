@@ -146,7 +146,7 @@ const Navbar = ({
     }
 
     try {
-      const response = await axios.get(`https://melody-connect-server.vercel.app/api/songs?q=${query}`);
+      const response = await axios.get(`https://melody-connect-server-beryl.vercel.app/api/songs?q=${query}`);
       setResults(response.data);
     } catch (error) {
       console.error("Error searching songs", error);
