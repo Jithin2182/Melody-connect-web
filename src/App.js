@@ -45,50 +45,36 @@ const App = () => {
 
   return (
     <Router>
-        <Navbar
-          user={user}
-          onSelectSong={setSelectedSong}
-          selectedLanguage={selectedLanguage}
-          setSelectedLanguage={setSelectedLanguage}
-          displayOption={displayOption}
-          setDisplayOption={setDisplayOption}
-          selectedInstrument={selectedInstrument}
-          setSelectedInstrument={setSelectedInstrument}
-        />
+      <Navbar user={user} />
 
-        <Box
-          maxW="1000px"
-          mx="auto"
-          mt={5}
-          bg="white"
-          borderRadius="md"
-          boxShadow="md"
-        >
-          <Routes>
-            {user ? (
-              <>
-                <Route
-                  path="/"
-                  element={
-                    <SongDetails
-                      song={selectedSong}
-                      selectedLanguage={selectedLanguage}
-                      displayOption={displayOption}
-                      selectedInstrument={selectedInstrument}
-                    />
-                  }
+      <Routes>
+        {user ? (
+          <>
+            <Route
+              path="/"
+              element={
+                <SongDetails
+                  song={selectedSong}
+                  onSelectSong={setSelectedSong}
+                  selectedLanguage={selectedLanguage}
+                  setSelectedLanguage={setSelectedLanguage}
+                  displayOption={displayOption}
+                  setDisplayOption={setDisplayOption}
+                  selectedInstrument={selectedInstrument}
+                  setSelectedInstrument={setSelectedInstrument}
                 />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </>
-            ) : (
-              <>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="*" element={<Navigate to="/login" replace />} />
-              </>
-            )}
-          </Routes>
-        </Box>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </>
+        ) : (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </>
+        )}
+      </Routes>
     </Router>
   );
 };
