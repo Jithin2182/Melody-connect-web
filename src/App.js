@@ -7,11 +7,12 @@ import {
 } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { Box } from "@chakra-ui/react";
+
 import SongDetails from "./components/SongDetail";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import styled from "styled-components";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -28,22 +29,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Styled Components
-const AppContainer = styled.div`
-  font-family: "Arial", sans-serif;
-  background: #f4f4f4;
-  min-height: 100vh;
-  padding: 20px;
-`;
-
-const ContentWrapper = styled.div`
-  margin: auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-`;
-
 const App = () => {
   const [user, setUser] = useState(null);
   const [selectedSong, setSelectedSong] = useState(null);
@@ -51,7 +36,6 @@ const App = () => {
   const [displayOption, setDisplayOption] = useState("lyrics");
   const [selectedInstrument, setSelectedInstrument] = useState("guitar");
 
-  // Listen for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -61,7 +45,12 @@ const App = () => {
 
   return (
     <Router>
-      <AppContainer>
+      <Box
+        fontFamily="Arial, sans-serif"
+        bg="gray.900"
+        minH="100vh"
+        p={5}
+      >
         <Navbar
           user={user}
           onSelectSong={setSelectedSong}
@@ -72,7 +61,15 @@ const App = () => {
           selectedInstrument={selectedInstrument}
           setSelectedInstrument={setSelectedInstrument}
         />
-        <ContentWrapper>
+
+        <Box
+          maxW="1000px"
+          mx="auto"
+          mt={5}
+          bg="white"
+          borderRadius="md"
+          boxShadow="md"
+        >
           <Routes>
             {user ? (
               <>
@@ -97,8 +94,8 @@ const App = () => {
               </>
             )}
           </Routes>
-        </ContentWrapper>
-      </AppContainer>
+        </Box>
+      </Box>
     </Router>
   );
 };

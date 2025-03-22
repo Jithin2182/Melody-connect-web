@@ -1,80 +1,35 @@
 import React, { useState, useEffect } from "react";
 import Sanscript from "@sanskrit-coders/sanscript";
-import styled from "styled-components";
+import {
+  Box,
+  Heading,
+  Flex,
+  Text,
+  Spinner,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
-// Styled Components
-const SongContainer = styled.div`
-  margin: 40px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: "Arial", sans-serif;
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  color: #333;
-  margin-bottom: 20px;
-`;
-
-// Side-by-side container for lyrics & transliteration
-const ContentWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-
-const Section = styled.div`
-  flex: 1;
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-`;
-
-const Subtitle = styled.h4`
-  color: #555;
-  margin-bottom: 10px;
-  text-align: center;
-`;
-
-const LyricsText = styled.pre`
-  white-space: pre-wrap;
-  font-size: 1.1em;
-  background: #eef1f5;
-  padding: 10px;
-  border-radius: 5px;
-  font-family: "Courier New", monospace;
-  min-height: 200px;
-`;
-
-const ErrorText = styled.p`
-  color: red;
-  font-weight: bold;
-  text-align: center;
-`;
-
-const SongDetails = ({ song, selectedLanguage, displayOption, selectedInstrument }) => {
+const SongDetails = ({
+  song,
+  selectedLanguage,
+  displayOption,
+  selectedInstrument,
+}) => {
   const [transliteratedLyrics, setTransliteratedLyrics] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Function to bold chords
   const boldChords = (text) => {
     if (!text) return "";
-    return text.replace(/(\b[A-G](?:#|b)?(?:maj|min|m|dim|aug)?\d*\b)/g, "<strong>$1</strong>");
+    return text.replace(
+      /(\b[A-G](?:#|b)?(?:maj|min|m|dim|aug)?\d*\b)/g,
+      "<strong>$1</strong>"
+    );
   };
 
-  // Process lyrics and chords
   const processedLyrics = boldChords(song?.lyrics || "");
   const processedChords = boldChords(song?.chords?.[selectedInstrument] || "");
 
-  // Handle transliteration automatically when selectedLanguage changes
   useEffect(() => {
     if (selectedLanguage === "none" || !song?.lyrics) {
       setTransliteratedLyrics("");
@@ -90,43 +45,82 @@ const SongDetails = ({ song, selectedLanguage, displayOption, selectedInstrument
       setTransliteratedLyrics(result);
     } catch (error) {
       console.error("Transliteration error:", error);
-      setError("Transliteration failed. Please ensure the lyrics are in ITRANS format.");
+      setError(
+        "Transliteration failed. Please ensure the lyrics are in ITRANS format."
+      );
     } finally {
       setIsLoading(false);
     }
   }, [selectedLanguage, song?.lyrics]);
 
-  return (
-    <SongContainer>
-      <Title>{song?.title} - {song?.artist}</Title>
+  const bgColor = useColorModeValue("gray.700", "gray.700");
+  const sectionBg = useColorModeValue("blue.600", "gray.600");
+  const lyricsBg = useColorModeValue("gray.900", "gray.500");
 
-      {/* Side-by-Side Layout for Lyrics & Transliteration */}
-      <ContentWrapper>
-        {/* Lyrics or Chords Section */}
-        <Section>
-          <Subtitle>{displayOption === "lyrics" ? "Lyrics" : "Lyrics with Chords"}</Subtitle>
-          <LyricsText
+  return (
+    <Box p={6} borderRadius="md" bg={bgColor}>
+      <Heading as="h2" size="lg" color={"gray.100"} textAlign="center" mb={6}>
+        {song?.title} - {song?.artist}
+      </Heading>
+
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        gap={6}
+        justify="space-between"
+      >
+        {/* Left: Lyrics/Chords Section */}
+        <Box flex="1" bg={sectionBg} p={4} borderRadius="md" boxShadow="sm">
+          <Heading as="h4" size="md" textAlign="center" mb={4} color="gray.200">
+            {displayOption === "lyrics" ? "Lyrics" : "Lyrics with Chords"}
+          </Heading>
+          <Box
+            bg={lyricsBg}
+            p={3}
+            color={"white"}
+            borderRadius="md"
+            minH="200px"
+            fontFamily="'Courier New', monospace"
+            whiteSpace="pre-wrap"
             dangerouslySetInnerHTML={{
-              __html: displayOption === "lyrics" ? processedLyrics : processedChords,
+              __html:
+                displayOption === "lyrics" ? processedLyrics : processedChords,
             }}
           />
-        </Section>
+        </Box>
 
-        {/* Transliteration Section */}
-        <Section>
-          <Subtitle>Transliterated Lyrics</Subtitle>
+        {/* Right: Transliteration */}
+        <Box flex="1" bg={sectionBg} p={4} borderRadius="md" boxShadow="sm">
+          <Heading as="h4" size="md" textAlign="center" mb={4} color="gray.700">
+            Transliterated Lyrics
+          </Heading>
           {selectedLanguage === "none" ? (
-            <p>Select a language to see transliterated lyrics.</p>
+            <Text textAlign="center">
+              Select a language to see transliterated lyrics.
+            </Text>
           ) : isLoading ? (
-            <p>Transliterating...</p>
+            <Flex justify="center">
+              <Spinner color="red.500" />
+            </Flex>
           ) : error ? (
-            <ErrorText>{error}</ErrorText>
+            <Text color="red.500" fontWeight="bold" textAlign="center">
+              {error}
+            </Text>
           ) : (
-            <LyricsText>{transliteratedLyrics}</LyricsText>
+            <Box
+              bg={lyricsBg}
+              p={3}
+              color={"white"}
+              borderRadius="md"
+              minH="200px"
+              fontFamily="'Courier New', monospace"
+              whiteSpace="pre-wrap"
+            >
+              {transliteratedLyrics}
+            </Box>
           )}
-        </Section>
-      </ContentWrapper>
-    </SongContainer>
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 

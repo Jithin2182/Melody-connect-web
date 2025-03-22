@@ -1,88 +1,68 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
-import styled from "styled-components";
-
-// Styled Components
-const HomeContainer = styled.div`
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: "Arial", sans-serif;
-`;
-
-const Title = styled.h1`
-  text-align: center;
-  color: #333;
-  margin-bottom: 20px;
-`;
-
-const SongList = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const SongItem = styled.li`
-  background: #f8f9fa;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, background 0.3s;
-
-  &:hover {
-    background: #e2e6ea;
-    transform: scale(1.02);
-  }
-`;
-
-const SongLink = styled(Link)`
-  text-decoration: none;
-  color: #007bff;
-  font-size: 1.1em;
-  font-weight: bold;
-  display: block;
-
-  &:hover {
-    color: #0056b3;
-  }
-`;
+import {
+  Box,
+  Heading,
+  SimpleGrid,
+  Text,
+  Link as ChakraLink,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
 const Home = () => {
   const [songs, setSongs] = useState([]);
-
-  const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+  const API_URL = process.env.REACT_APP_BACKEND_URL || "";
 
   useEffect(() => {
     axios
-    // .get("http://localhost:5000/api/songs")
-      .get(`${API_URL}/api/songs`) // Fetch songs from backend
+      .get(`${API_URL}/api/songs`)
       .then((response) => setSongs(response.data))
       .catch((error) => console.error("Error fetching songs:", error));
   }, []);
 
+  const containerBg = useColorModeValue("white", "gray.700");
+  const songItemBg = useColorModeValue("gray.100", "gray.600");
+  const hoverBg = useColorModeValue("gray.200", "gray.500");
+
   return (
-    <HomeContainer>
-      <Title>Available Songs</Title>
-      <SongList>
+    <Box
+      mx="auto"
+      mt={10}
+      borderRadius="md"
+      boxShadow="0px 4px 10px rgba(232, 3, 3, 0.88)"
+      bg={containerBg}
+    >
+      <Heading as="h1" size="xl" textAlign="center" mb={6} color="gray.700">
+        Available Songs
+      </Heading>
+
+      <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={4}>
         {songs.map((song) => (
-          <SongItem key={song._id}>
-            <SongLink to={`/songs/${song._id}`}>
+          <Box
+            key={song._id}
+            p={4}
+            bg={songItemBg}
+            borderRadius="md"
+            boxShadow="md"
+            transition="all 0.2s"
+            _hover={{ bg: hoverBg, transform: "scale(1.02)" }}
+          >
+            <ChakraLink
+              as={RouterLink}
+              to={`/songs/${song._id}`}
+              fontWeight="bold"
+              fontSize="lg"
+              color="blue.500"
+              _hover={{ color: "blue.700", textDecoration: "none" }}
+              display="block"
+            >
               {song.title} - {song.artist}
-            </SongLink>
-          </SongItem>
+            </ChakraLink>
+          </Box>
         ))}
-      </SongList>
-    </HomeContainer>
+      </SimpleGrid>
+    </Box>
   );
 };
 
