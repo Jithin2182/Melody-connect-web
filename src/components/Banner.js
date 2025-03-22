@@ -11,7 +11,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import Lottie from "lottie-web";
-import File from "./../assets/song.json"
+import File from "./../assets/song.json";
 
 export default function Banner() {
   let animate = React.createRef();
@@ -46,9 +46,9 @@ export default function Banner() {
             </Text>
           </Heading>
           <Text color={"gray.500"}>
-            Snippy is a rich coding snippets app that lets you create your own
-            code snippets, categorize them, and even sync them in the cloud so
-            you can use them anywhere. All that is free!
+            🎶 Melody-Connect is your personal music companion — search, sing,
+            and strum with lyrics, chords, and transliteration support in your
+            favorite languages, all in one place, absolutely free!
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
@@ -63,7 +63,7 @@ export default function Banner() {
               bg={"blue.400"}
               _hover={{ bg: "blue.500" }}
             >
-              Get started
+              🎶 Feel the Melody ✨
             </Button>
           </Stack>
         </Stack>
@@ -74,7 +74,7 @@ export default function Banner() {
           position={"relative"}
           w={"full"}
         >
-            <Box ref={animate} />
+          <Box ref={animate} />
         </Flex>
       </Stack>
     </Container>

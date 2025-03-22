@@ -52,7 +52,7 @@ const Navbar = ({ user }) => {
           <Flex align="center" gap={3}>
             {user ? (
               <Flex align="center" gap={2}>
-                <Text>Hi, {user.email}!</Text>
+                <Text>Hello, {user.email}!</Text>
                 <Button
                   onClick={handleLogout}
                   size="sm"

@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Sanscript from "@sanskrit-coders/sanscript";
 import axios from "axios";
 import { debounce } from "lodash";
+import Lottie from "lottie-web";
+import musicNotes from "../assets/musicNotes.json";
 import {
   Box,
   Heading,
@@ -28,6 +30,9 @@ const SongDetails = ({
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+
+  const lyricsAnimRef = useRef(null);
+  const chordsAnimRef = useRef(null);
 
   const handleSearch = useCallback(
     debounce(async (query) => {
@@ -76,6 +81,25 @@ const SongDetails = ({
     }
   }, [selectedLanguage, song?.lyrics]);
 
+  useEffect(() => {
+    const container = displayOption === "lyrics" ? lyricsAnimRef.current : chordsAnimRef.current;
+    const animationData = displayOption === "lyrics" ? musicNotes : musicNotes;
+
+    if (!container) return;
+
+    const anim = Lottie.loadAnimation({
+      container,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      animationData,
+    });
+
+    anim.setSpeed(1.5);
+
+    return () => anim.destroy();
+  }, [displayOption]);
+
   const sectionBg = useColorModeValue("blue.400", "gray.600");
   const lyricsBg = useColorModeValue("gray.900", "gray.500");
 
@@ -90,7 +114,6 @@ const SongDetails = ({
         justify="center"
         direction={{ base: "column", md: "row" }}
       >
-        {/* Search Input */}
         <Box position="relative" w="250px">
           <Input
             placeholder="Search for a song..."
@@ -141,7 +164,6 @@ const SongDetails = ({
           )}
         </Box>
 
-        {/* Display Option (Lyrics/Chords) */}
         <Select
           value={displayOption}
           onChange={(e) => setDisplayOption(e.target.value)}
@@ -154,7 +176,6 @@ const SongDetails = ({
           <option value="chords">Chords</option>
         </Select>
 
-        {/* Instrument Selector */}
         <Select
           value={selectedInstrument}
           onChange={(e) => setSelectedInstrument(e.target.value)}
@@ -168,7 +189,6 @@ const SongDetails = ({
           <option value="ukulele">Ukulele</option>
         </Select>
 
-        {/* Language Selector */}
         <Select
           value={selectedLanguage}
           onChange={(e) => setSelectedLanguage(e.target.value)}
@@ -189,20 +209,37 @@ const SongDetails = ({
         </Select>
       </Flex>
 
-      {/* 🎵 Song Title */}
       <Heading as="h2" size="lg" color={"gray.800"} textAlign="center" mb={6}>
         {song?.title} - {song?.artist}
       </Heading>
 
-      {/* 🎶 Main Content */}
       <Flex
         direction={{ base: "column", md: "row" }}
         gap={6}
         justify="space-between"
       >
-        {/* Left: Lyrics/Chords Section */}
-        <Box flex="1" bg={sectionBg} p={4} borderRadius="md" boxShadow="sm">
-          <Heading as="h4" size="md" textAlign="center" mb={4} color="gray.200">
+        {/* Left: Lyrics or Chords Section with Animation */}
+        <Box position="relative" flex="1" bg={sectionBg} p={4} borderRadius="md" boxShadow="sm">
+          <Box
+            ref={displayOption === "lyrics" ? lyricsAnimRef : chordsAnimRef}
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            zIndex={1}
+            opacity={0.3}
+            pointerEvents="none"
+          />
+          <Heading
+            as="h4"
+            size="md"
+            textAlign="center"
+            mb={4}
+            color="gray.200"
+            position="relative"
+            zIndex={2}
+          >
             {displayOption === "lyrics" ? "Lyrics" : "Lyrics with Chords"}
           </Heading>
           <Box
@@ -217,6 +254,8 @@ const SongDetails = ({
               __html:
                 displayOption === "lyrics" ? processedLyrics : processedChords,
             }}
+            position="relative"
+            zIndex={2}
           />
         </Box>
 
