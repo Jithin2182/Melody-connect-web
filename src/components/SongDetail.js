@@ -53,13 +53,13 @@ const SongDetails = ({
     }
   }, [selectedLanguage, song?.lyrics]);
 
-  const bgColor = useColorModeValue("gray.700", "gray.700");
-  const sectionBg = useColorModeValue("blue.600", "gray.600");
+  const bgColor = useColorModeValue("gray.100", "gray.700");
+  const sectionBg = useColorModeValue("blue.400", "gray.600");
   const lyricsBg = useColorModeValue("gray.900", "gray.500");
 
   return (
-    <Box p={6} borderRadius="md" bg={bgColor}>
-      <Heading as="h2" size="lg" color={"gray.100"} textAlign="center" mb={6}>
+    <Box p={6} borderRadius="md">
+      <Heading as="h2" size="lg" color={"gray.800"} textAlign="center" mb={6}>
         {song?.title} - {song?.artist}
       </Heading>
 

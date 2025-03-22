@@ -45,12 +45,6 @@ const App = () => {
 
   return (
     <Router>
-      <Box
-        fontFamily="Arial, sans-serif"
-        bg="gray.900"
-        minH="100vh"
-        p={5}
-      >
         <Navbar
           user={user}
           onSelectSong={setSelectedSong}
@@ -95,7 +89,6 @@ const App = () => {
             )}
           </Routes>
         </Box>
-      </Box>
     </Router>
   );
 };
