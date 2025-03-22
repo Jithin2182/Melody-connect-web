@@ -11,9 +11,7 @@ const root = createRoot(rootElement);
 
 // Render the app
 root.render(
-  <React.StrictMode>
-    <ChakraProvider>
-      <App />
-    </ChakraProvider>
-  </React.StrictMode>
+  <ChakraProvider>
+    <App />
+  </ChakraProvider>
 );

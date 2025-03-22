@@ -13,6 +13,7 @@ import SongDetails from "./components/SongDetail";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Home from "./pages/Home";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -53,7 +54,7 @@ const App = () => {
             <Route
               path="/"
               element={
-                <SongDetails
+                <Home
                   song={selectedSong}
                   onSelectSong={setSelectedSong}
                   selectedLanguage={selectedLanguage}
