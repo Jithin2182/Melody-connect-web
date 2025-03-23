@@ -38,7 +38,7 @@ const SongDetails = ({
     debounce(async (query) => {
       if (!query) return setResults([]);
       try {
-        const response = await axios.get(`/api/songs?q=${query}`);
+        const response = await axios.get(`https://melody-connect-server-snwz.onrender.com/api/songs?q=${query}`);
         setResults(response.data);
       } catch (error) {
         console.error("Error searching songs", error);
