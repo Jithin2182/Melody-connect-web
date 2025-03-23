@@ -20,6 +20,9 @@ const Register = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("");
+  const [mobile, setMobile] = useState("");
+
   const [error, setError] = useState("");
 
   const handleSignUp = async () => {
@@ -53,6 +56,30 @@ const Register = () => {
         <Heading textAlign="center" mb={6} color="blue.800">
           Create Account 🎵
         </Heading>
+
+        <FormControl mb={4}>
+          <FormLabel color="blue.900">UserName</FormLabel>
+          <Input
+            type="userName"
+            placeholder="Enter your Username"
+            bg="white"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
+          />
+        </FormControl>
+
+        <FormControl mb={4}>
+          <FormLabel color="blue.900">Mobile</FormLabel>
+          <Input
+            type="mobile"
+            placeholder="+91 xxxxx xxxx"
+            bg="white"
+            value={mobile}
+            onChange={(e) => setMobile(e.target.value)}
+            _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
+          />
+        </FormControl>
 
         <FormControl mb={4}>
           <FormLabel color="blue.900">Email</FormLabel>
